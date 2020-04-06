@@ -1,7 +1,9 @@
-# TERA Proxy
+# AION Proxy
 A fork of the original TERA Proxy project by Meishu, currently maintained by Pinkie Pie.
+Forked Version of Pinkie's Proxy currently rewriting/changing it to get it work with AION :)
 
-Join us on Discord: [![Discord](https://discordapp.com/api/guilds/281311998765957121/widget.png)](https://discord.gg/RR9zf85)
+-- WORK IN FCKING PROGRESS BOIIIIIIIIIIS
+
 
 ### Features
 * Fast, lightweight and secure with a focus on minimal dependencies
