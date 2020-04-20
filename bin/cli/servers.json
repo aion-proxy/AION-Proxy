@@ -1,8 +1,10 @@
 [
-	{ "region": "eu", "id": xx, "ip": "79.110.83.80", "port": 2106, "name": "AION EU Login server" },
-	{ "region": "eu", "id": xx, "ip": "79.110.83.72", "port": 7777, "name": "(DE) - Odin/Thor" },
-	{ "region": "eu", "id": xx, "ip": "79.110.83.66", "port": 7777, "name": "(INT) - Stormwing" },
-	{ "region": "eu", "id": xx, "ip": "79.110.83.69", "port": 7777, "name": "(INT/TR) - Sillus" },
-	{ "region": "eu", "id": xx, "ip": "79.110.83.70", "port": 7777, "name": "(FR) - Ragnarok" }
-	
+	{ "ip": "79.110.83.80", "port": 2106, "name": "(EU) - Login" },
+	{ "ip": "79.110.83.72", "port": 7777, "name": "(DE) - Odin" },
+	{ "ip": "79.110.83.66", "port": 7777, "name": "(INT) - Stormwing" },
+	{ "ip": "79.110.83.69", "port": 7777, "name": "(INT/TR) - Sillus" },
+	{ "ip": "79.110.83.70", "port": 7777, "name": "(FR) - Ragnarok" },
+	{ "ip": "79.110.83.101", "port": 7777, "name": "(INT) - Rookie2" },
+	{ "ip": "79.110.83.87", "port": 7777, "name": "(INT) - Union1" },
+	{ "ip": "79.110.83.89", "port": 7777, "name": "(INT) - Union2" }
 ]
