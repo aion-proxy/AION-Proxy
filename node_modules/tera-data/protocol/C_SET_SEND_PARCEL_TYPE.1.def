@@ -1,2 +1,0 @@
-uint32 contract
-uint32 type # 0 = Message only, 1 = Parcel

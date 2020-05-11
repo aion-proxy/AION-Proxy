@@ -1,3 +1,0 @@
-uint64 target
-int32  status # 0 = normal, 1 = in combat, 2 = campfire
-byte   unk # always 0?

@@ -1,5 +1,0 @@
-int64 gameId
-vec3 loc
-int16 w
-vec3 dest
-bool isClimbing

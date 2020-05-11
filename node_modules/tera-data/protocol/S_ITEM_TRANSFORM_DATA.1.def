@@ -1,7 +1,0 @@
-uint64 gameId
-int32  item
-float  scale
-vec3fa rotation
-vec3   translation
-vec3   translationDebug
-bool   unk # true?

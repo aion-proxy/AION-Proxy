@@ -1,2 +1,0 @@
-uint32 totalPlaytime # seconds
-uint64 localServerTime # unix timestamp
