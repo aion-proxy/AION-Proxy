@@ -14,7 +14,7 @@
 * Fully open-source
 
 # Installation
-* [Download](https://github.com/PatrickSantoZZ/AION-Proxy/archive/master.zip) the current version from GitHub (`Clone or Download > Download ZIP`)
+* [Download](https://github.com/aion-proxy/AION-Proxy/archive/master.zip) the current version from GitHub (`Clone or Download > Download ZIP`)
 * Extract to anywhere (ie. your desktop) using an archive manager such as [7-Zip](https://sourceforge.net/projects/sevenzip/files/latest/download)
 * Download any mods you wish to use and place them in `aion-proxy/mods/`
 * * Many useful mods can be found on [aion-mods](https://github.com/aion-mods) 
