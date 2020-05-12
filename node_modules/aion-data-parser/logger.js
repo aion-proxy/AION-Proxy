@@ -1,1 +1,1 @@
-module.exports = require('log')('tera-data-parser')
+module.exports = require('log')('aion-data-parser')
