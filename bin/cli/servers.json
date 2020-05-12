@@ -6,5 +6,6 @@
 	{ "ip": "79.110.83.101", "port": 7777, "name": "(INT) - Rookie2" },
 	{ "ip": "79.110.83.87", "port": 7777, "name": "(INT) - Union1" },
 	{ "ip": "79.110.83.89", "port": 7777, "name": "(INT) - Union2" },
-	{ "ip": "79.110.83.75", "port": 7777, "name": "(INT) - RedKatalam" }
+	{ "ip": "79.110.83.75", "port": 7777, "name": "(INT) - RedKatalam" },
+	{ "ip": "79.110.83.107", "port": 7777, "name": "(INT) - PTS" }
 ]
