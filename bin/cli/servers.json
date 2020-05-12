@@ -1,5 +1,4 @@
 [
-	{ "ip": "79.110.83.80", "port": 2106, "name": "(EU) - Login" },
 	{ "ip": "79.110.83.72", "port": 7777, "name": "(DE) - Odin" },
 	{ "ip": "79.110.83.66", "port": 7777, "name": "(INT) - Stormwing" },
 	{ "ip": "79.110.83.69", "port": 7777, "name": "(INT) - Sillus" },
@@ -8,6 +7,5 @@
 	{ "ip": "79.110.83.87", "port": 7777, "name": "(INT) - Union1" },
 	{ "ip": "79.110.83.89", "port": 7777, "name": "(INT) - Union2" },
 	{ "ip": "79.110.83.75", "port": 7777, "name": "(INT) - RedKatalam" },
-	{ "ip": "79.110.83.84", "port": 2106, "name": "(EU) - Login PTS" },
 	{ "ip": "79.110.83.107", "port": 7777, "name": "(INT) - PTS" }
 ]
