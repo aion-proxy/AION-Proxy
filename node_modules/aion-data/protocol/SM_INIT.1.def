@@ -1,8 +1,8 @@
-xxx	SessionId
-xxx	protocolRevision
-xxx	RSAKey
-xxx	unk		
-xxx	BlowfishKey
-xxx	unk1
-xxx	unk2	
-xxx	unk3
+xxx	sessionId
+xxx	protocolrevision
+xxx	publicRsaKey
+byte unk		# writeB(new byte[16]);
+xxx blowfishKey
+xxx unk1
+xxx unk2	
+xxx unk3

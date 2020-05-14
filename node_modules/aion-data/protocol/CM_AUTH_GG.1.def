@@ -1,2 +1,2 @@
-xxx sessionId
-xxx unk
+int32 sessionId
+byte unk #unsure about it if byte or int32

@@ -1,1 +1,1 @@
-string reason
+int32 reason #messageID of the reason

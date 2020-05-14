@@ -1,4 +1,4 @@
-xxx accountId
-xxx loginOk
-xxx unk
-xxx unk1
+int32 accountId
+int32 loginOk
+byte unk # byte or int32
+byte unk1 # byte or int32

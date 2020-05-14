@@ -1,7 +1,7 @@
-xxx accountId
-xxx loginOk
-xxx unk
-xxx unk1
-xxx 1002
-xxx 126282164
-xxx unk3
+int32 accountId
+int32 loginOk
+int32 unk
+int32 unk1
+int32 1002
+int32 126282164
+byte unk3

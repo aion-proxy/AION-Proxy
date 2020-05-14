@@ -1,4 +1,4 @@
-xxx accountId
-xxx loginOk
-xxx reconnectKey
-xxx unk
+int32 accountId
+int32 loginOk
+int32 reconnectKey
+byte unk #byte or int32

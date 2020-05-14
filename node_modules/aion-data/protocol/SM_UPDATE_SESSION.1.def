@@ -1,4 +1,4 @@
-xxx accountId
-xxx loginOk
-xxx sysMsgId
-xxx unk
+int32 accountId
+int32 loginOk
+int32 sysMsgId # or buffer?
+byte unk #unsure if we need that.

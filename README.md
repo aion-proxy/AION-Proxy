@@ -2,8 +2,15 @@
 * WORK IN PROGRESS
 
 * A fork of the TERA Proxy of Pinkie Pie & Meishu. 
-* currently rewriting/changing it to get it work with AION :)
+* currently rewriting it to get it work with AION :)
 
+### ToDo
+* reworking parser
+* adding mod support(dispatch&other stuff)
+* better connection/realclient support
+* adding fakeclient(clientless? when?)
+* defs & opcodes (parserstuff #1)
+* ???
 
 
 
