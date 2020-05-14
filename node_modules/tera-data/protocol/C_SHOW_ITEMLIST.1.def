@@ -1,6 +1,0 @@
-# majorPatchVersion >= 85
-
-uint64 gameId
-int32  container
-int32  pocket
-bool   requested # see S_ITEMLIST

@@ -1,3 +1,0 @@
-uint64 cid
-int32 slot # - 40
-int32 amount

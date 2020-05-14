@@ -1,5 +1,5 @@
 @echo off
-title Uninstall TERA Proxy
+title Uninstall AION Proxy
 cd /d "%~dp0"
 
 sc stop windivert > NUL
@@ -10,5 +10,5 @@ if %errorlevel% == 5 (
 	exit
 )
 
-echo Driver unloaded successfully. You may now delete TERA Proxy.
+echo Driver unloaded successfully. You may now delete AION Proxy.
 pause

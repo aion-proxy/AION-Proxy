@@ -8,7 +8,7 @@ const net = require('net')
 	while(true)
 		try {
 			await new Promise((resolve, reject) => {
-				net.createServer().listen('\\\\.\\pipe\\tera-proxy', resolve).on('error', reject)
+				net.createServer().listen('\\\\.\\pipe\\aion-proxy', resolve).on('error', reject)
 			})
 			process.exit()
 		}

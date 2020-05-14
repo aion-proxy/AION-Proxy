@@ -1,3 +1,0 @@
-uint64 gameId
-int16  w
-uint32 time # milliseconds until the animation completes

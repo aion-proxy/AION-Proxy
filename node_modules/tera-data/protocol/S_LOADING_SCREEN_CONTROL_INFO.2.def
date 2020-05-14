@@ -1,1 +1,0 @@
-bool enableCustom # false = use built-in loading screens, true = use loading screens from DownloadedResources.dat

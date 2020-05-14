@@ -1,2 +1,0 @@
-int32 id # See ReputationSystem.json -> NpcGuildList -> NPCGuild
-int32 amount # amount of credits

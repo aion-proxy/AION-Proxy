@@ -1,3 +1,0 @@
-uint64 gameId # shuttle gameId
-vec3 loc # normal world location
-vec3 shuttleLoc # relative to shuttles location/space

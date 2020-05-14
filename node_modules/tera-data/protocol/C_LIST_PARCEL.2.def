@@ -1,3 +1,0 @@
-uint32 unk1
-uint32 page
-byte filter	# 1 = show unread messages and unclaimed parcels

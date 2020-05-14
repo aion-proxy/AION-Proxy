@@ -1,3 +1,0 @@
-# these fields are not required, they are probably exit codes
-int32 unk1 # sometimes 1
-int32 unk2

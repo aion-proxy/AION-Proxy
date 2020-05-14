@@ -1,3 +1,0 @@
-int32 channel # see C_CHAT
-int32 minRoll
-int32 maxRoll

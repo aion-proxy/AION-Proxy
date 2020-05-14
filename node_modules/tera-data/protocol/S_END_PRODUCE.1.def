@@ -1,3 +1,0 @@
-# majorPatchVersion >= 77
-
-bool success # If false, client aborts crafting and sends C_CANCEL_CONTRACT

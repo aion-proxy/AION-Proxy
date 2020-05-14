@@ -1,2 +1,0 @@
-uint32 player
-int32 skill # 0 = Invisible, 1 = Invincible, 2 = Hide from Mobs

@@ -1,4 +1,0 @@
-uint64 target
-uint32 id
-byte   status
-int32  duration

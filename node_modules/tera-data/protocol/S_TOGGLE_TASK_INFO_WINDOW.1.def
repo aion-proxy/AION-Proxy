@@ -1,3 +1,0 @@
-uint32 id
-uint32 uid
-bool show # 0 = hide, 1 = show

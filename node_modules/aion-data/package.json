@@ -1,0 +1,7 @@
+{
+  "name": "aion-data",
+  "version": "1.0.0",
+  "description": "AION Definitions and Opcodes",
+  "main": "package.json",
+  "author": "Nekonekoo"
+}

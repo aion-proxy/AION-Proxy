@@ -3,26 +3,27 @@
 require('module').wrapper[0] += `'use strict';`
 
 if(process.platform !== 'win32') {
-	console.error('TERA Proxy only supports Windows.')
+	console.error('Aion Proxy only supports Windows.')
 	return
 }
 
 const logRoot = require('log'),
 	log = logRoot('proxy'),
 	net = require('net'),
+	fs = require('fs'),
 	path = require('path'),
-	settings = require('../../settings/_tera-proxy_.json')
+	settings = require('../../settings/_aion-proxy_.json')
 
 ;(async () => {
-	log.info(`Node version: ${process.versions.node}`)
+	log.info(`Node version: ${process.versions.node}`);
 
 	try {
 		await new Promise((resolve, reject) => {
-			net.createServer().listen('\\\\.\\pipe\\tera-proxy', resolve).on('error', reject)
+			net.createServer().listen('\\\\.\\pipe\\aion-proxy', resolve).on('error', reject)
 		})
 	}
 	catch(e) {
-		log.error('Another instance of TERA Proxy is already running. Please close it then try again.')
+		log.error('Another instance of Aion Proxy is already running. Please close it then try again.')
 		return
 	}
 
@@ -36,8 +37,8 @@ const logRoot = require('log'),
 
 			if(await (new (require('updater'))).update({
 				dir: path.join(__dirname, '../..'),
-				manifestUrl: `https://raw.githubusercontent.com/tera-proxy/tera-proxy/${branch}/manifest.json`,
-				defaultUrl: `https://raw.githubusercontent.com/tera-proxy/tera-proxy/${branch}/`,
+				//manifestUrl: `https://raw.githubusercontent.com/aion-proxy/aion-proxy/${branch}/manifest.json`,
+				//defaultUrl: `https://raw.githubusercontent.com/aion-proxy/aion-proxy/${branch}/`,
 				preUpdate(changed) {
 					let winDivertChanged = false
 					for(let file of changed)
@@ -47,7 +48,7 @@ const logRoot = require('log'),
 					if(changed.has('bin/node.exe')) return true
 				}
 			})) {
-				log.info('TERA Proxy has been updated. Please restart it to apply changes.')
+				log.info('Aion Proxy has been updated. Please restart it to apply changes.')
 				process.exit()
 			}
 			log.info('Proxy is up to date')
@@ -60,53 +61,20 @@ const logRoot = require('log'),
 	}
 
 	const ProxyGame = require('proxy-game'),
-		{ ModManager, Dispatch, Connection, RealClient } = require('tera-proxy-game'),
-		servers = require('./servers')
+		   servers = require('./servers'),
+		{ Connection, RealClient } = require('aion-proxy-game');
+	
 
 	let initialized = false
+	/*
+		const modManager = new ModManager({
+			modsDir: path.join(__dirname, '..', '..', 'mods'),
+			settingsDir: path.join(__dirname, '..', '..', 'settings'),
+			autoUpdate: settings.autoUpdateMods
+		})
 
-	const modManager = new ModManager({
-		modsDir: path.join(__dirname, '..', '..', 'mods'),
-		settingsDir: path.join(__dirname, '..', '..', 'settings'),
-		// Disable at your own risk!
-		blacklist(pkg) {
-			const name = pkg.name
-
-			if(['CaaliLogger', 'CaaliStateTracker'].includes(name)) return 'Data collector'
-
-			// Note: This one is specifically blacklisted because the auto-update redirect will throw confusing errors otherwise
-			if(name === 'flasher') return 'Incompatible'
-
-			if([
-				'anti-cc',
-				'auto-fishing',
-				'auto-heal',
-				'auto retaliate',
-				'battleground-capper',
-				'berserker-unleash',
-				'corsair-memes',
-				'easy-fishing',
-				'fast-runeburst',
-				'fast solo dungeons',
-				'faster-petrax',
-				'instant-revive',
-				'kumas-royale-ru-tera',
-				'let-me-fish',
-				'let-me-target',
-				'op-zerker-unleash',
-				'parcel-memes',
-				'rtport'
-			].includes(name.toLowerCase()))
-				return 'High risk of ban'
-
-			if(name === 'Auto Target' && pkg.author === 'Fukki')
-				return 'Possible malware/riskware'
-		},
-		autoUpdate: settings.autoUpdateMods
-	})
-
-	await modManager.init()
-
+		await modManager.init()
+	*/
 	const redirects = [],
 		serverQ = []
 
@@ -119,47 +87,45 @@ const logRoot = require('log'),
 				return
 			}
 
-			const logThis = log(`client ${socket.remoteAddress}:${socket.remotePort}`)
+			const logThis = log(`Client ${socket.remoteAddress}:${socket.remotePort}`)
 
 			socket.setNoDelay(true)
+			
+			
+			const connection = new Connection(),
+				  client = new RealClient(connection, socket),
+				  srvConn = connection.connect(client, { host: redirect[2], port: redirect[3] }) // Connect to self to bypass redirection
 
-			const dispatch = new Dispatch(modManager),
-				connection = new Connection(dispatch, { classic: data.type === 'classic' }),
-				client = new RealClient(connection, socket),
-				srvConn = connection.connect(client, { host: redirect[2], port: redirect[3] }) // Connect to self to bypass redirection
-
-			logThis.log('connecting')
-
-			dispatch.once('init', () => {
-				dispatch.region = data.region
-				dispatch.loadAll()
-			})
+			logThis.log('Connection to Login/Gameserver')
 
 			socket.on('error', err => {
-				if(err.code === 'ECONNRESET') logThis.log('lost connection to client')
+				if(err.code === 'ECONNRESET') logThis.log('Lost connection to Client')
 				else logThis.warn(err)
 			})
-
-			srvConn.on('connect', () => { logThis.log(`connected to ${srvConn.remoteAddress}:${srvConn.remotePort}`) })
+			
+			srvConn.on('connect', () => {
+                logThis.log(`connected to ${srvConn.remoteAddress}:${srvConn.remotePort}`)
+			})
 
 			srvConn.on('error', err => {
-				if(err.code === 'ECONNRESET') logThis.log('lost connection to server')
-				else if(err.code === 'ETIMEDOUT') logThis.log('timed out waiting for server response')
+				if(err.code === 'ECONNRESET') logThis.log('Lost connection to server')
+				else if(err.code === 'ETIMEDOUT') logThis.log('Timed out waiting for server response')
 				else logThis.warn(err)
 			})
 
-			srvConn.on('close', () => { logThis.log('disconnected') })
+			srvConn.on('close', () => { logThis.log('Disconnected') })
 		})
-
+		
 		serverQ.push(new Promise((resolve, reject) => {
 			server.listen(0, '127.0.0.2', resolve).on('error', reject)
 		}).then(() => {
 			const addr = server.address()
-			redirects.push(redirect = [data.ip, data.port, addr.address, addr.port])
+			redirects.push(redirect = [data.ip, data.port, addr.address, addr.port = addr.port])
 		}))
 	}
-
 	await Promise.all(serverQ)
+
+
 
 	try {
 		// Swap gameserver addresses with proxy ones
@@ -171,12 +137,12 @@ const logRoot = require('log'),
 	}
 	catch(e) {
 		let msg = null
-
+		
 		switch(e.code) {
 			case 2:
 				msg = [
 					'Failed to load WinDivert driver file.',
-					'Start TERA Proxy prior to any VPN software.',
+					'Start aion Proxy prior to any VPN software.',
 					'Make sure anti-virus software did not delete required files.',
 					'Open an administrator command prompt and enter \'sc stop windivert1.4\'.'
 				]
@@ -184,7 +150,7 @@ const logRoot = require('log'),
 			case 5:
 				msg = [
 					'Access denied.',
-					'Right click TeraProxy.bat and select \'Run as administrator\'.',
+					'Right click aionProxy.bat and select \'Run as administrator\'.',
 					'Disable or uninstall your anti-virus software.'
 				]
 				break
@@ -217,7 +183,7 @@ const logRoot = require('log'),
 		process.exit(1)
 	}
 
-	log.info('OK')
+	log.info('OK Ready for connection')
 	initialized = true
 })().catch(e => {
 	log.error(e)
