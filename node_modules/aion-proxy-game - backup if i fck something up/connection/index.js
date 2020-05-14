@@ -2,24 +2,25 @@
 
 const net = require('net')
 
-const Dispatch = require('./dispatch'),
-	  AionCrypto = require('aion-crypto'),
+//const Dispatch = require('./dispatch')
+//const Encryption = require('./encryption')
+const AionCrypto = require('aion-crypto'),
 	  Packetizer = require('../packetizer'),
 	  decryptor = new AionCrypto(),
-	  encryptor = new AionCrypto()
+	  encryptor = new AionCrypto();
 
 class Connection {
-	constructor(dispatch) {
+	constructor() {
 		//this.info = info
 		this.client = null
-		this.dispatch = dispatch
-		dispatch.connection = this // TODO: Consider refactoring
-		//AionCrypto.connection = this
+		//this.dispatch = dispatch
+		//dispatch.connection = this // TODO: Consider refactoring
+		AionCrypto.connection = this
 
 		this.state = -1
 		//this.session = new Encryption(this.info.classic)
 		this.packetizer = new Packetizer(data => {
-			if(this.dispatch) data = this.dispatch.handle(data, true)
+			//if(this.dispatch) data = this.dispatch.handle(data, true)
 			if(data)
 			//console.log('packetizerCN '+data.toString('hex'))
 				// Note: socket.write() is not thread-safe
@@ -142,10 +143,10 @@ class Connection {
 			client.close()
 		}
 
-		if(this.dispatch) {
+		/*if(this.dispatch) {
 			this.dispatch.reset()
 			this.dispatch = null
-		}
+		}*/
 
 		this.session = null
 		this.packetizer = null

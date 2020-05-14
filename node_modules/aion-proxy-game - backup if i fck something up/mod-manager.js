@@ -4,8 +4,8 @@ const log = require('log')('mod-manager'),
 	fs = require('fs'),
 	path = require('path'),
 	Updater = require('updater'),
-	yauzl = require('yauzl');
-	//compat = require('./compat')
+	yauzl = require('yauzl'),
+	compat = require('./compat')
 
 class ModManager {
 	constructor(opts) {

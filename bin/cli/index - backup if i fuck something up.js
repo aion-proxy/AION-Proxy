@@ -62,7 +62,7 @@ const logRoot = require('log'),
 
 	const ProxyGame = require('proxy-game'),
 //	{ ModManager, Dispatch, Connection, RealClient } = require('aion-proxy-game'),
-		{ ModManager, Dispatch, Connection, RealClient } = require('aion-proxy-game'),
+		{ ModManager, Connection, RealClient } = require('aion-proxy-game'),
 		servers = require('./servers');
 
 	let initialized = false
@@ -91,19 +91,19 @@ const logRoot = require('log'),
 
 			socket.setNoDelay(true)
 			
-			const dispatch = new Dispatch(modManager),
+			//const dispatch = new Dispatch(modManager),
 			//connection = new Connection(dispatch, { classic: data.type === 'classic' }),
-			      connection = new Connection(dispatch),
+			const connection = new Connection(),
 				  client = new RealClient(connection, socket),
 				  srvConn = connection.connect(client, { host: redirect[2], port: redirect[3] }) // Connect to self to bypass redirection
 
 			logThis.log('Connection to Login/Gameserver')
-		
+		/*
 			dispatch.once('init', () => {
-				//dispatch.region = data.region
+				dispatch.region = data.region
 				dispatch.loadAll()
 			})
-		
+		*/
 			socket.on('error', err => {
 				if(err.code === 'ECONNRESET') logThis.log('Lost connection to Client')
 				else logThis.warn(err)
