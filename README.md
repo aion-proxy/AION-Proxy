@@ -1,6 +1,7 @@
 # AION Proxy
 * WORK IN PROGRESS
 
+* Join us on Discord: [![Discord](https://discordapp.com/api/guilds/710298549736177685/widget.png)](https://discord.gg/gAaMX9y)
 * A fork of the TERA Proxy of Pinkie Pie & Meishu. 
 * currently rewriting it to get it work with AION :)
 
