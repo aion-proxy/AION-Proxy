@@ -1,0 +1,6 @@
+byte type
+int32 accoutnId
+string ip
+int32 time
+int32 adminObjId
+bool result

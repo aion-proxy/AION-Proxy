@@ -1,0 +1,6 @@
+uint32 gameId
+int16 level
+int32 currentHp
+int32 maxHp
+int32 currentMp
+int32 maxMp

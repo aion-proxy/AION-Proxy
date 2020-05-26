@@ -1,0 +1,4 @@
+byte type
+string adress
+string details
+int64 time

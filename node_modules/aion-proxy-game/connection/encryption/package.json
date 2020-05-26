@@ -1,0 +1,7 @@
+{
+  "name": "aion-crypto",
+  "version": "1.0.0",
+  "description": "Crypto Part for AION Online",
+  "main": "index.js",
+  "author": "Pinkie-Pie"
+}

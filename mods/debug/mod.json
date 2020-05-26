@@ -1,0 +1,7 @@
+{
+	"name": "debug",
+	"reloadable": true,
+	"title": "Debug",
+	"author": "Pinkie Pie",
+	"description": "Adds various debugging commands. Intended for mod developers."
+}

@@ -1,0 +1,6 @@
+string password
+byte gameServerId
+int32 maxPlayers
+int32 port
+byte defaultAdress
+array [IPrange] #IP Range of gameservers

@@ -1,0 +1,12 @@
+{
+	"_version": 1,
+	"logger": {
+		"enabled": false,
+		"dir": ".",
+		"incoming": null,
+		"fake": false,
+		"silenced": null,
+		"unmapped": null,
+		"blacklist": []
+	}
+}
