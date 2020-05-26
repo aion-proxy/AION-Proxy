@@ -1,11 +1,16 @@
 'use strict'
 
+<<<<<<< HEAD
 const PRIVATE_CHANNEL_INDEX = 7,
 	PRIVATE_CHANNEL_ID = -2 >>> 0,
 	PRIVATE_CHANNEL_NAME = 'Proxy',
 	PUBLIC_ENABLE = true,
 	PUBLIC_MATCH = /^!([^!].*)$/,
 	LOGIN_MESSAGE = true,
+=======
+const PUBLIC_ENABLE = true,
+	PUBLIC_MATCH = /^\?([^?].*)$/,
+>>>>>>> master
 	CLI_MODE = true,
 	readline = require('readline'),
 	log = require('log')('Command'),
@@ -16,6 +21,7 @@ class Command {
 	constructor(mod) {
 		this.mod = mod
 
+<<<<<<< HEAD
 		this.loginHook = false
 		this.hooks = {}
 
@@ -53,6 +59,10 @@ class Command {
 				}
 			})
 
+=======
+		this.hooks = {}
+
+>>>>>>> master
 		let lastError = '',
 			hookOverride = (name, version, cb) => {
 				mod.hook(name, version, {order: -10}, cb)
@@ -68,7 +78,11 @@ class Command {
 			},
 			handleCommand = message => {
 				try {
+<<<<<<< HEAD
 					var args = parseArgs(stripOuterHTML(message))
+=======
+					var args = parseArgs(message)
+>>>>>>> master
 				}
 				catch(e) {
 					lastError = 'Syntax error: ' + e.message
@@ -90,6 +104,7 @@ class Command {
 				return false
 			}
 
+<<<<<<< HEAD
 		// /! commands
 		hookOverride('C_OP_COMMAND', 1, event => handleCommand(event.command))
 
@@ -114,6 +129,18 @@ class Command {
 			})
 		rl.on('line', (cmd) => {
 			if(CLI_MODE)handleCommand(cmd)
+=======
+		// Whispers with regex match
+		if(PUBLIC_ENABLE)
+			hookOverride('C_CHAT_WHISPER', 1, event => {
+				const match = PUBLIC_MATCH.exec(event.message)
+
+				if(match) return handleCommand(match[1])
+			})
+
+		rl.on('line', (cmd) => {
+			if(CLI_MODE) handleCommand(cmd)
+>>>>>>> master
 		})
 	}
 
@@ -164,6 +191,7 @@ class Command {
 		delete this.hooks[cmd.toLowerCase()]
 	}
 
+<<<<<<< HEAD
 	message(msg) {
 		this.mod.send('S_PRIVATE_CHAT', 1, {
 			channel: PRIVATE_CHANNEL_ID,
@@ -172,6 +200,15 @@ class Command {
 			message: msg
 		})
 		if(CLI_MODE)log.info(msg)
+=======
+	message(msg) { // message ingame | find something that can be used without get kicked from server q.q
+	/*	this.mod.send('C_CHAT_WHISPER', 1, {
+			name: 'Proxy',
+			message: msg
+		}) 
+	*/ 
+		if(CLI_MODE) log.info(msg)
+>>>>>>> master
 	}
 }
 
@@ -196,6 +233,7 @@ function makeSubCommandHandler(_obj, ctx) {
 	}
 }
 
+<<<<<<< HEAD
 function stripOuterHTML(str) {
 	return str.replace(/^<[^>]+>|<\/[^>]+><[^\/][^>]*>|<\/[^>]+>$/g, '')
 }
@@ -203,6 +241,10 @@ function stripOuterHTML(str) {
 function parseArgs(str) {
 	const parseHTML = /.*?<\/.*?>/g,
 		args = []
+=======
+function parseArgs(str) {
+	const args = []
+>>>>>>> master
 
 	let arg = '',
 		quote = ''
@@ -211,6 +253,7 @@ function parseArgs(str) {
 		c = str[i]
 
 		switch(c) {
+<<<<<<< HEAD
 			case '<':
 				parseHTML.lastIndex = i + 1
 
@@ -222,6 +265,8 @@ function parseArgs(str) {
 				arg += str.substr(i, len + 1)
 				i += len
 				break
+=======
+>>>>>>> master
 			case '\\':
 				c = str[++i]
 

@@ -126,7 +126,7 @@ class aionProtocol {
 				def = compiled
 			}
 
-			return def.read(buf, 4)
+			return def.read(buf, 7)
 		}
 		catch(e) {
 			const name = this.packetEnum.code.get(buf.readUInt16LE(2))
@@ -183,7 +183,7 @@ class aionProtocol {
 				def = compiled
 			}
 
-			const buf = def.write(val, 4)
+			const buf = def.write(val, 7)
 			// Write header
 			buf[0] = buf.length
 			buf[1] = buf.length >> 8
@@ -245,7 +245,7 @@ class aionProtocol {
 			def = compiled
 		}
 
-		return 4 + def.length(val)
+		return 7 + def.length(val)
 	}
 
 	static loadDefs() {

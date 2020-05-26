@@ -25,11 +25,19 @@ module.exports = function Debug(mod) {
 		const val = await eval(unHtml(str))
 
 		if(val == null)
+<<<<<<< HEAD
 			command.message(typeof val)
 		else
 			command.message(html(util.inspect(val, { maxArrayLength: 30, breakLength: Infinity })))
 	})
 
+=======
+			console.log(typeof val)
+		else
+			console.log(html(util.inspect(val, { maxArrayLength: 30, breakLength: Infinity })))
+	})
+/*
+>>>>>>> master
 	// Simulate most button presses
 	command.add('input', (cmd = '', param = '', unk) => {
 		mod.send('I_INPUT_COMMAND', 1, {
@@ -43,12 +51,21 @@ module.exports = function Debug(mod) {
 	command.add('ue', (...args) => {
 		mod.send('S_STEER_DEBUG_COMMAND', 1, { command: unHtml(args.join(' ')) })
 	})
+<<<<<<< HEAD
 
 	// Reload specified mod
 	command.add('reload', name => {
 		if(!mod.isLoaded(name)) command.message(`Mod not found: ${name}`)
 		else if(!mod.reload(name)) command.message(`${name} does not support reload`)
 		else command.message(`Reloaded ${name}`)
+=======
+*/
+	// Reload specified mod
+	command.add('reload', name => {
+		if(!mod.isLoaded(name)) console.log(`Mod not found: ${name}`)
+		else if(!mod.reload(name)) console.log(`${name} does not support reload`)
+		else console.log(`Reloaded ${name}`)
+>>>>>>> master
 	})
 
 	// Packet logger
@@ -63,11 +80,19 @@ module.exports = function Debug(mod) {
 
 		command.add('log', {
 			$none() {
+<<<<<<< HEAD
 				command.message(`Logging to file ${(mod.settings.logger.enabled = !mod.settings.logger.enabled) ? 'enabled' : 'disabled'}.`)
 				reload()
 			},
 			$default() {
 				command.message(
+=======
+				console.log(`Logging to file ${(mod.settings.logger.enabled = !mod.settings.logger.enabled) ? 'enabled' : 'disabled'}.`)
+				reload()
+			},
+			$default() {
+				console.log(
+>>>>>>> master
 `Log settings:
 - file: ${mod.settings.logger.enabled ? logFile : 'disabled'}
 - direction: ${stringifyFilter(mod.settings.logger.incoming, true)}
@@ -80,42 +105,74 @@ module.exports = function Debug(mod) {
 			direction(arg) {
 				arg = arg.toLowerCase()
 				if(!['both', 'client', 'server'].includes(arg)) {
+<<<<<<< HEAD
 					command.message(`Usage: ${this} both|client|server`)
+=======
+					console.log(`Usage: ${this} both|client|server`)
+>>>>>>> master
 					return
 				}
 				mod.settings.logger.incoming = parseFilter(arg)
 				reload()
+<<<<<<< HEAD
 				command.message(`Packet direction: ${arg}`)
+=======
+				console.log(`Packet direction: ${arg}`)
+>>>>>>> master
 			},
 			fake(arg) {
 				arg = arg.toLowerCase()
 				if(!['show', 'only', 'hide'].includes(arg)) {
+<<<<<<< HEAD
 					command.message(`Usage: ${this} show|only|hide`)
+=======
+					console.log(`Usage: ${this} show|only|hide`)
+>>>>>>> master
 					return
 				}
 				mod.settings.logger.fake = parseFilter(arg)
 				reload()
+<<<<<<< HEAD
 				command.message(`Fake packets: ${arg}`)
+=======
+				console.log(`Fake packets: ${arg}`)
+>>>>>>> master
 			},
 			blocked(arg) {
 				arg = arg.toLowerCase()
 				if(!['show', 'only', 'hide'].includes(arg)) {
+<<<<<<< HEAD
 					command.message(`Usage: ${this} show|only|hide`)
+=======
+					console.log(`Usage: ${this} show|only|hide`)
+>>>>>>> master
 					return
 				}
 				mod.settings.logger.silenced = parseFilter(arg)
 				reload()
+<<<<<<< HEAD
 				command.message(`Blocked packets: ${arg}`)
+=======
+				console.log(`Blocked packets: ${arg}`)
+>>>>>>> master
 			},
 			unmapped(arg) {
 				arg = arg.toLowerCase()
 				if(!['show', 'only', 'hide'].includes(arg)) {
+<<<<<<< HEAD
 					command.message(`Usage: ${this} show|only|hide`)
+=======
+					console.log(`Usage: ${this} show|only|hide`)
+>>>>>>> master
 					return
 				}
 				mod.settings.logger.unmapped = parseFilter(arg)
 				reload()
+<<<<<<< HEAD
 				command.message(`Unmapped packets: ${arg}`)
+=======
+				console.log(`Unmapped packets: ${arg}`)
+>>>>>>> master
 			}
 		})
 

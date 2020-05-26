@@ -1,7 +1,10 @@
 {
+<<<<<<< HEAD
 	"name": "command",
 	"update": "github:kloct/command",
 	"title": "Command",
 	"author": "Pinkie Pie",
 	"description": "Add ingame chat commands to your mod."
+=======
+>>>>>>> master
 }

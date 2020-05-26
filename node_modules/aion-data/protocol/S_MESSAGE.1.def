@@ -1,0 +1,8 @@
+byte type
+byte canRead # raceId+1
+uint32 gameId
+string name
+string message
+float x
+float y
+float z

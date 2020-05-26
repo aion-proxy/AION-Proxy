@@ -61,7 +61,6 @@ const logRoot = require('log'),
 	}
 
 	const ProxyGame = require('proxy-game'),
-//	{ ModManager, Dispatch, Connection, RealClient } = require('aion-proxy-game'),
 		{ ModManager, Dispatch, Connection, RealClient } = require('aion-proxy-game'),
 		servers = require('./servers');
 
@@ -87,37 +86,36 @@ const logRoot = require('log'),
 				return
 			}
 
-			const logThis = log(`Client ${socket.remoteAddress}:${socket.remotePort}`)
+			const logThis = log(`client ${socket.remoteAddress}:${socket.remotePort}`)
 
 			socket.setNoDelay(true)
 			
 			const dispatch = new Dispatch(modManager),
-			//connection = new Connection(dispatch, { classic: data.type === 'classic' }),
-			      connection = new Connection(dispatch),
-				  client = new RealClient(connection, socket),
+			      connection = new Connection.Connection(dispatch),
+				  client = new Connection.RealClient(connection, socket),
 				  srvConn = connection.connect(client, { host: redirect[2], port: redirect[3] }) // Connect to self to bypass redirection
 
-			logThis.log('Connection to Login/Gameserver')
+			logThis.log('connection to server')
 		
 			dispatch.once('init', () => {
-				//dispatch.region = data.region
+				dispatch.region = data.region
 				dispatch.loadAll()
 			})
 		
 			socket.on('error', err => {
-				if(err.code === 'ECONNRESET') logThis.log('Lost connection to Client')
+				if(err.code === 'ECONNRESET') logThis.log('lost connection to Client')
 				else logThis.warn(err)
 			})
 			
 			srvConn.on('connect', () => {	logThis.log(`connected to ${srvConn.remoteAddress}:${srvConn.remotePort}`)	})
 
 			srvConn.on('error', err => {
-				if(err.code === 'ECONNRESET') logThis.log('Lost connection to server')
-				else if(err.code === 'ETIMEDOUT') logThis.log('Timed out waiting for server response')
+				if(err.code === 'ECONNRESET') logThis.log('lost connection to server')
+				else if(err.code === 'ETIMEDOUT') logThis.log('rimed out waiting for server response')
 				else logThis.warn(err)
 			})
 
-			srvConn.on('close', () => { logThis.log('Disconnected') })
+			srvConn.on('close', () => { logThis.log('disconnected') })
 		})
 		
 		serverQ.push(new Promise((resolve, reject) => {
@@ -188,7 +186,7 @@ const logRoot = require('log'),
 		process.exit(1)
 	}
 
-	log.info('OK Ready for connection')
+	log.info('OK')
 	initialized = true
 })().catch(e => {
 	log.error(e)
