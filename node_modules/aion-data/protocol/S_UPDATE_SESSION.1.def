@@ -1,4 +1,0 @@
-int32 accountId
-int32 loginOk
-int32 sysMsgId # or buffer?
-byte unk #unsure if we need that.

@@ -1,5 +1,0 @@
-byte type #Ban type 1 = account 2 = IP 3 = Full ban (account and IP)
-int32 accountId
-string IP
-int32 time
-int32 adminObjId

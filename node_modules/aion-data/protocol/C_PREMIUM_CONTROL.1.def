@@ -1,4 +1,0 @@
-int32 accountId
-int32 requestId
-int64 requiredCost
-byte serverId

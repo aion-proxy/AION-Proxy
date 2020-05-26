@@ -1,6 +1,0 @@
-string accountName
-int32 param
-int32 type
-string playerName
-string adminName
-bool result

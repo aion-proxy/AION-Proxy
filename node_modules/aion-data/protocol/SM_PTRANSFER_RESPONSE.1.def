@@ -1,6 +1,0 @@
-bool result
-string accountname
-int32 request
-int32 taskId
-string reason
-int32 task
