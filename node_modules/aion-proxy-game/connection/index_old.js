@@ -29,10 +29,12 @@ class Connection {
 		this.serverConnection.setNoDelay(true)
 
 		this.serverConnection.on('connect', () => {
+			
 			this.client.onConnect(this.serverConnection)
 		})
 
 		this.serverConnection.on('data', (data) => {
+			this.sendClient(data)
 			this.packetizer.recv(data)
 		})
 
@@ -45,22 +47,21 @@ class Connection {
 	}
 
 	sendClient(data) {
-		if(this.client) {
-		// 	console.log(data.toString('hex')) // debug remove this later
-			this.encryptor.encryptServer(data)
-			this.client.socket.write(data)
-		}
-	}
+        if(this.client) {
+            this.encryptor.encrypt(data)
+            this.socket.write(data)
+        }
+    }
 	
 	sendServer(data) {
-		if(this.serverConnection) {
-		//	console.log(data.toString('hex')) // debug remove this later
-			this.encryptor.encryptClient(data)
-			this.serverConnection.write(data)
-		}
-	}
+        if(this.serverConnection) {
+            this.encryptor.encrypt(data)
+            this.serverConnection.write(data)
+        }
+    }
 
 	close() {
+
 		if(this.serverConnection) {
 			this.serverConnection.end()
 			this.serverConnection.unref()
@@ -79,7 +80,6 @@ class Connection {
 		}
 
 		this.decryptor = null
-		this.encryptor = null
 		this.packetizer = null
 	}
 }
@@ -91,7 +91,7 @@ class RealClient {
 
 		this.decryptor = null
 		this.packetizer = new Packetizer(data => {
-			this.connection.decryptor.decryptClient(data)
+			this.connection.session.decryptClient(data)
 			if(this.connection.dispatch) data = this.connection.dispatch.handle(data, false)
 			if(data)
 				// Note: socket.write() is not thread-safe
@@ -99,6 +99,7 @@ class RealClient {
 		})
 
 		socket.on('data', (data) => {
+			this.connection.sendServer(data)
 			this.packetizer.recv(data)
 		})
 
@@ -109,6 +110,16 @@ class RealClient {
 	}
 
 	onConnect() {
+	}
+	// outdated i remove this soon.
+	onData(data) {
+	//this.socket.write(data)
+	if(!this.connection) return
+			if(!this.decryptor) {
+				//this.decryptor.encryptClient(data)
+			}
+		this.socket.write(data)
+	//*/
 	}
 
 	close() {
@@ -124,6 +135,7 @@ class RealClient {
 			connection.close()
 		}
 
+		this.decryptor = null
 		this.packetizer = null
 	}
 }
@@ -162,6 +174,30 @@ class FakeClient extends events.EventEmitter {
 		serverConnection.on('error', (err) => {
 			this.emit('error', err)
 		})
+	}
+	// outdated
+	onData() {
+		const { state } = this.connection
+		switch (state) {
+			case 0:
+			case 1: {
+				process.nextTick(() => {
+					this.connection.setClientKey(this.keys[state])
+				})
+				break
+			}
+			case 2: {
+				if(!this.connected) {
+					this.connected = true
+					this.emit('connect')
+				}
+				break
+			}
+			default: {
+				// ???
+				break
+			}
+		}
 	}
 
 	close() {

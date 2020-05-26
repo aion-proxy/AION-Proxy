@@ -1,7 +1,7 @@
 // <3 Pinkie Pie
 // :3
 
-const STATIC_KEY = Buffer.from('nKO/WctQ0AVLbpzfBkS6NevDYT8ourG5CRlmdjyJ72aswx4EPq1UgZhFMXH?3iI9', 'ASCII')
+const STATIC_KEY = Buffer.from('nKO/WctQ0AVLbpzfBkS6NevDYT8ourG5CRlmdjyJ72aswx4EPq1UgZhFMXH?3iI9', 'ascii')
 
 class AionCrypto {
 	constructor() {
@@ -16,10 +16,13 @@ class AionCrypto {
 	}
 
 	encryptServer(data) {
+		const opcode = data.readUInt16LE(2)
+
 		// Encrypt opcode
-		const opcode = this._encryptOpcode(opcode)
-		data.writeUInt16LE(opcode, 2)
-		data.writeUInt16LE(~opcode & 0xffff, 5) // Integrity check
+		const cryptOpcode = this._encryptOpcode(opcode)
+		data.writeUInt16LE(cryptOpcode, 2)
+		data[4] = 0x50 // Outgoing packet
+		data.writeUInt16LE(~cryptOpcode & 0xffff, 5) // Integrity check
 
 		if(opcode === 72) {
 			if(this.serverKey) throw Error('Duplicate key packet received')
@@ -50,7 +53,10 @@ class AionCrypto {
 		if(opcode === 72) {
 			if(this.serverKey) throw Error('Duplicate key packet received')
 
+			// Decrypt key
 			const key = this._decryptKey(data.readUInt32LE(7))
+			data.writeUInt32LE(key, 7)
+
 			this.serverKey = Buffer.allocUnsafe(8)
 			this.serverKey.writeUInt32LE(key, 0)
 			this.serverKey.writeUInt32LE(0x87546ca1, 4)
@@ -62,6 +68,7 @@ class AionCrypto {
 	encryptClient(data) {
 		if(!this.clientKey)	throw Error('Cannot send client packet before key setup')
 
+		data[4] = 0x51 // Incoming packet
 		this._encrypt(data, this.clientKey)
 	}
 
