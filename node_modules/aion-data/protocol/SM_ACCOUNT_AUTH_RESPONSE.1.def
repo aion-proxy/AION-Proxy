@@ -1,8 +1,0 @@
-int32 accountId
-bool ok
-string accountName
-byte accessLevel
-byte membership
-int64 toll
-int64 luna
-byte isReturn #Returnee account = extra bonus
