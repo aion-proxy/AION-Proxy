@@ -1,29 +1,30 @@
-// Hotfix for https://github.com/nodejs/node/issues/30039
 'use strict'
-require('module').wrapper[0] += `'use strict';`
+//require('module').wrapper[0] += `'use strict';`
 
 if(process.platform !== 'win32') {
-	console.error('Aion Proxy only supports Windows.')
+	console.error('TERA Proxy only supports Windows.')
 	return
 }
 
 const logRoot = require('log'),
-	log = logRoot('proxy'),
+	log = logRoot('login'),
 	net = require('net'),
-	fs = require('fs'),
 	path = require('path'),
+	AionCryptoLogin = require('./aion-crypto-login'),
+	loginEncryptor = new AionCryptoLogin(),
+  	loginDecryptor = new AionCryptoLogin(),
 	settings = require('../../settings/_aion-proxy_.json')
 
 ;(async () => {
-	log.info(`Node version: ${process.versions.node}`);
+	log.info(`Node version: ${process.versions.node}`)
 
 	try {
 		await new Promise((resolve, reject) => {
-			net.createServer().listen('\\\\.\\pipe\\aion-proxy', resolve).on('error', reject)
+			net.createServer().listen('\\\\.\\pipe\\neko-proxy', resolve).on('error', reject)
 		})
 	}
 	catch(e) {
-		log.error('Another instance of Aion Proxy is already running. Please close it then try again.')
+		log.error('Another instance of TERA Proxy is already running. Please close it then try again.')
 		return
 	}
 
@@ -37,8 +38,8 @@ const logRoot = require('log'),
 
 			if(await (new (require('updater'))).update({
 				dir: path.join(__dirname, '../..'),
-				//manifestUrl: `https://raw.githubusercontent.com/aion-proxy/aion-proxy/${branch}/manifest.json`,
-				//defaultUrl: `https://raw.githubusercontent.com/aion-proxy/aion-proxy/${branch}/`,
+				//manifestUrl: `https://raw.githubusercontent.com/tera-proxy/tera-proxy/${branch}/manifest.json`,
+				//defaultUrl: `https://raw.githubusercontent.com/tera-proxy/tera-proxy/${branch}/`,
 				preUpdate(changed) {
 					let winDivertChanged = false
 					for(let file of changed)
@@ -48,7 +49,7 @@ const logRoot = require('log'),
 					if(changed.has('bin/node.exe')) return true
 				}
 			})) {
-				log.info('Aion Proxy has been updated. Please restart it to apply changes.')
+				log.info('TERA Proxy has been updated. Please restart it to apply changes.')
 				process.exit()
 			}
 			log.info('Proxy is up to date')
@@ -61,65 +62,78 @@ const logRoot = require('log'),
 	}
 
 	const ProxyGame = require('proxy-game'),
-		{ ModManager, Dispatch, Connection, RealClient } = require('aion-proxy-game'),
-		servers = require('./servers');
+		  servers = require('./loginservers')
 
 	let initialized = false
-	
-	const modManager = new ModManager({
-		modsDir: path.join(__dirname, '..', '..', 'mods'),
-		settingsDir: path.join(__dirname, '..', '..', 'settings'),
-		autoUpdate: settings.autoUpdateMods
-	})
 
-	await modManager.init()
-	
 	const redirects = [],
-		serverQ = []
+	      serverQ = [];
 
 	for(let data of servers) {
 		let redirect
 
-		const server = net.createServer(socket => {
-			if(!initialized) { // Should never happen, but would result in an infinite loop otherwise
-				socket.end()
-				return
-			}
+        const server = net.createServer(socket => {
+            if(!initialized) { // Should never happen, but would result in an infinite loop otherwise
+                socket.end()
+                return
+            }
 
-			const logThis = log(`client ${socket.remoteAddress}:${socket.remotePort}`)
+            const logThis = log(`client ${socket.remoteAddress}:${socket.remotePort}`)
 
-			socket.setNoDelay(true)
-			
-			const dispatch = new Dispatch(modManager),
-			      connection = new Connection.Connection(dispatch),
-				  client = new Connection.RealClient(connection, socket),
-				  srvConn = connection.connect(client, { host: redirect[2], port: redirect[3] }) // Connect to self to bypass redirection
+            socket.setNoDelay(true)
 
-			logThis.log('connection to server')
-		
-			dispatch.once('init', () => {
-				dispatch.region = data.region
-				dispatch.loadAll()
+            const srvConn = new net.Socket()
+            srvConn.setNoDelay(true)
+            srvConn.connect(redirect[3], redirect[2]) // Connect to self to bypass redirection
+
+            logThis.log('connecting')
+
+            const logDate = Date.now()
+
+            let connected = false,
+                buf = []
+
+				//client part
+            socket.on('data', data => {
+
+				if (connected)
+					srvConn.write(data)
+					loginDecryptor.decrypt(data)
+					console.log('[Login-Client] '+data.toString('hex'))
+					/* else
+			     buf.push(data)
+			*/})
+
+            socket.on('error', err => {
+                if(err.code === 'ECONNRESET') logThis.log('lost connection to client')
+                else logThis.warn(err)
+            })
+
+            srvConn.on('connect', () => {
+                connected = true
+                logThis.log(`connected to ${srvConn.remoteAddress}:${srvConn.remotePort}`)
+
+                if(buf.length) srvConn.write(Buffer.concat(buf))
+            })
+				// server part
+            srvConn.on('data', data => {
+
+				socket.write(data)
+				loginDecryptor.decrypt(data)
+				console.log('[Login-Server] '+data.toString('hex'))
 			})
-		
-			socket.on('error', err => {
-				if(err.code === 'ECONNRESET') logThis.log('lost connection to Client')
-				else logThis.warn(err)
-			})
-			
-			srvConn.on('connect', () => {	logThis.log(`connected to ${srvConn.remoteAddress}:${srvConn.remotePort}`)	})
 
-			srvConn.on('error', err => {
-				if(err.code === 'ECONNRESET') logThis.log('lost connection to server')
-				else if(err.code === 'ETIMEDOUT') logThis.log('rimed out waiting for server response')
-				else logThis.warn(err)
-			})
+            srvConn.on('error', err => {
+                if(err.code === 'ECONNRESET') logThis.log('lost connection to server')
+                else if(err.code === 'ETIMEDOUT') logThis.log('timed out waiting for server response')
+                else logThis.warn(err)
+            })
 
-			srvConn.on('close', () => { logThis.log('disconnected') })
-		})
+            srvConn.on('close', () => { logThis.log('disconnected') })
+        })
 		
 		serverQ.push(new Promise((resolve, reject) => {
-			server.listen(0, '127.0.0.2', resolve).on('error', reject)
+			server.listen(0, '127.0.0.1', resolve).on('error', reject)
 		}).then(() => {
 			const addr = server.address()
 			redirects.push(redirect = [data.ip, data.port, addr.address, addr.port = addr.port])
@@ -133,7 +147,7 @@ const logRoot = require('log'),
 	try {
 		// Swap gameserver addresses with proxy ones
 		const pg = new ProxyGame(`tcp && (${
-			['127.0.0.2', ...new Set(servers.map(s => s.ip))].map(ip => `ip.SrcAddr == ${ip}||ip.DstAddr==${ip}`).join('||')
+			['127.0.0.1', ...new Set(servers.map(s => s.ip))].map(ip => `ip.SrcAddr == ${ip}||ip.DstAddr==${ip}`).join('||')
 		})`, ...redirects)
 
 		setInterval(() => { pg }, 60000) // TODO: Store object in C++ memory and only delete on close()

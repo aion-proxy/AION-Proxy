@@ -1,0 +1,6 @@
+int32 type
+bool result
+string playerName
+int32 param
+string adminName
+int32 accountId

@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"dependencies": {},
 	"main": "bin/cli",
-	"description": "A network-based modding framework for TERA Online.",
+	"description": "A network-based modding framework for AION Online.",
 	"license": "GPL-3.0-or-later",
 	"author": "Pinkie Pie",
 	"contributors": [

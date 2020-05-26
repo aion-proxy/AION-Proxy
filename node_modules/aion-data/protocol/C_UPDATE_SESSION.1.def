@@ -1,0 +1,4 @@
+int32 accountId
+int32 loginOk
+int32 reconnectKey
+byte unk #byte or int32
