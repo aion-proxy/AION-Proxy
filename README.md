@@ -1,2 +1,2 @@
 # AION Proxy
-* closed cuz of problems with gameforge.
+* comming soon boys & girls
